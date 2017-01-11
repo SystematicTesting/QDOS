@@ -14,7 +14,7 @@ All rights reserved.
 	<packaging>pom</packaging>
 
 	<scm>
-		<connection>https://github.com/SystematicTesting/QDOS</connection>
+		<connection>scm:git:git://github.com/SystematicTesting/QDOS.git</connection>
 		<developerConnection>scm:git:git@github.com:SystematicTesting/QDOS.git</developerConnection>
 		<url>https://github.com/SystematicTesting/QDOS</url>
 	  	<tag>HEAD</tag>
