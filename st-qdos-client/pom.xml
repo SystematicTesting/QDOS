@@ -9,7 +9,7 @@ All rights reserved.
 	<parent>
 		<groupId>com.systematictesting</groupId>
 		<artifactId>st-qdos</artifactId>
-		<version>5.1.1-SNAPSHOT</version>
+		<version>5.1.1</version>
 	</parent>
 	<artifactId>st-qdos-client</artifactId>
 	<name>ST : QDOS Client</name>
