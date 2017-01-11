@@ -8,6 +8,7 @@ public class SingleTestSuite {
 		String FILE_NAME = "fileName";
 		String SITE_NAME = "siteName";
 		String SOURCE_TYPE = "sourceType";
+		String SOURCE_EMAIL = "sourceEmail";
 		String FILE_LOCATION = "fileLocation";
 		String TEST_SUITE = "testSuite";
 		String LAST_MODIFIED_TIME = "lastmodifiedtime";
@@ -25,6 +26,7 @@ public class SingleTestSuite {
 	private String sourceType;
 	
 	private String fileLocation;
+	private String sourceEmail;
 	private TestSuite testSuite;
 	private Long lastmodifiedtime;
 	private Long createtime;
@@ -82,6 +84,19 @@ public class SingleTestSuite {
 	public void setTestSuite(TestSuite testSuite) {
 		this.testSuite = testSuite;
 	}
+	public String getSourceEmail() {
+		return sourceEmail;
+	}
+	public void setSourceEmail(String sourceEmail) {
+		this.sourceEmail = sourceEmail;
+	}
+	@Override
+	public String toString() {
+		return "SingleTestSuite [id=" + id + ", fileName=" + fileName + ", email=" + email + ", siteName=" + siteName
+				+ ", sourceType=" + sourceType + ", fileLocation=" + fileLocation + ", sourceEmail=" + sourceEmail
+				+ ", testSuite=" + testSuite + ", lastmodifiedtime=" + lastmodifiedtime + ", createtime=" + createtime
+				+ "]";
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,6 +108,7 @@ public class SingleTestSuite {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastmodifiedtime == null) ? 0 : lastmodifiedtime.hashCode());
 		result = prime * result + ((siteName == null) ? 0 : siteName.hashCode());
+		result = prime * result + ((sourceEmail == null) ? 0 : sourceEmail.hashCode());
 		result = prime * result + ((sourceType == null) ? 0 : sourceType.hashCode());
 		result = prime * result + ((testSuite == null) ? 0 : testSuite.hashCode());
 		return result;
@@ -141,6 +157,11 @@ public class SingleTestSuite {
 				return false;
 		} else if (!siteName.equals(other.siteName))
 			return false;
+		if (sourceEmail == null) {
+			if (other.sourceEmail != null)
+				return false;
+		} else if (!sourceEmail.equals(other.sourceEmail))
+			return false;
 		if (sourceType == null) {
 			if (other.sourceType != null)
 				return false;
@@ -153,10 +174,5 @@ public class SingleTestSuite {
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "SingleTestSuite [id=" + id + ", fileName=" + fileName + ", email=" + email + ", siteName=" + siteName
-				+ ", sourceType=" + sourceType + ", fileLocation=" + fileLocation + ", testSuite=" + testSuite
-				+ ", lastmodifiedtime=" + lastmodifiedtime + ", createtime=" + createtime + "]";
-	}
+	
 }
