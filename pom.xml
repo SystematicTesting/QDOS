@@ -8,7 +8,7 @@ All rights reserved.
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.systematictesting</groupId>
 	<artifactId>st-qdos</artifactId>
-	<version>5.2.1-SNAPSHOT</version>
+	<version>5.2.1</version>
 	<name>ST : QDOS</name>
 	<description>ST : QDOS</description>
 	<packaging>pom</packaging>
@@ -17,7 +17,7 @@ All rights reserved.
 		<connection>scm:git:git://github.com/SystematicTesting/QDOS.git</connection>
 		<developerConnection>scm:git:git@github.com:SystematicTesting/QDOS.git</developerConnection>
 		<url>https://github.com/SystematicTesting/QDOS</url>
-	  	<tag>HEAD</tag>
+	  	<tag>st-qdos-5.2.1</tag>
   	</scm>
 
 	<distributionManagement>
@@ -260,12 +260,12 @@ All rights reserved.
 			<dependency>
 				<groupId>com.systematictesting</groupId>
 				<artifactId>st-qdos-client</artifactId>
-				<version>5.2.1-SNAPSHOT</version>
+				<version>5.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.systematictesting</groupId>
 				<artifactId>st-qdos-core</artifactId>
-				<version>5.2.1-SNAPSHOT</version>
+				<version>5.2.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
