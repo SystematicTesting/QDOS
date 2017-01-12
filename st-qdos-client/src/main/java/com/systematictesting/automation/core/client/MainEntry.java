@@ -107,7 +107,7 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
 
         jLabel9.setText("Report Collector Server URL *");
 
-        reportCollectorServerNameTextBox.setText("http://app.systematictesting.com");
+        reportCollectorServerNameTextBox.setText("http://qdos.systematictesting.com");
 
         proxyServerNameAndPortLabel.setText("Proxy for Browser (server:port)");
         proxyServerNameAndPortLabel.setToolTipText("");
