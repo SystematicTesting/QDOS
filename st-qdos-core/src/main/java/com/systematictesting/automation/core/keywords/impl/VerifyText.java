@@ -49,7 +49,7 @@ public class VerifyText implements Process {
 			return Result.FAIL;
 		}
 		if (!testStep.getElementValue().trim().equals(actual.trim())){
-			return Result.FAIL;
+			return Result.FAIL + ": ACTUAL DATA -> "+actual;
 		}
 		return Result.PASS;
 	}
