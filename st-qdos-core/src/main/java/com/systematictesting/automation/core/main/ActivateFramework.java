@@ -35,8 +35,8 @@ public class ActivateFramework implements Framework {
 
 	private static final String LOGGGING_TIME_FORMAT = "HH:mm:ss";
 	private static final String TEST_CASE_TIME_FORMAT = "dd-MMM-yyyy HH:mm:ss";
-	private static final String PROCEED_ON_FAIL_NO = "N";
-	private static final String PROCEED_ON_FAIL_YES = "Y";
+	private static final String PROCEED_ON_FAIL_NO = "NO";
+	private static final String PROCEED_ON_FAIL_YES = "YES";
 	private static final String TEST_CASE_MODE_AUTOMATE = "AUTOMATE";
 	private String PACKAGE_NAME_FOR_KEYWORDS = "com.systematictesting.automation.core.keywords.impl";
 	
@@ -258,7 +258,7 @@ public class ActivateFramework implements Framework {
 							objTestStepDetails.setStepId(currentTSID);
 							objTestStepDetails.setStepDescription(stepDescription);
 							objTestStepDetails.setStepKeyword(testStep.getStepKeyword());
-							objTestStepDetails.setProceedOnFail(StringUtils.isBlank(proceedOnFail) ? PROCEED_ON_FAIL_YES : PROCEED_ON_FAIL_NO);
+							objTestStepDetails.setProceedOnFail(StringUtils.isBlank(proceedOnFail) || proceedOnFail.equalsIgnoreCase(PROCEED_ON_FAIL_YES)? PROCEED_ON_FAIL_YES : PROCEED_ON_FAIL_NO);
 	
 							try {
 								Class<?> keywordClass = getClass().getClassLoader().loadClass(getPackageNameForKeywords()+"."+testStep.getStepKeyword());
