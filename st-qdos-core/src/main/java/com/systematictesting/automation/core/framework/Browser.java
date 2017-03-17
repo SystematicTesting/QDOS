@@ -118,10 +118,7 @@ public class Browser {
 
 	public void close() {
 		if (CommandLineParamsUtils.getInstance().getBrowserName().equals(FrameworkParams.BROWSER_FIREFOX)) {
-			driver.close();
 			driver.quit();
-			wbdv.close();
-			wbdv.quit();
 		}
 		if (CommandLineParamsUtils.getInstance().getBrowserName().equals(FrameworkParams.BROWSER_CHROME)) {
 			driver.close();
