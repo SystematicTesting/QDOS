@@ -124,6 +124,10 @@ public class Browser {
 			driver.close();
 			wbdv.quit();
 		}
+		if (CommandLineParamsUtils.getInstance().getBrowserName().equals(FrameworkParams.BROWSER_HEADLESS)){
+			driver.close();
+			wbdv.quit();
+		}
 //		if (CommandLineParamsUtils.getInstance().getBrowserName().equals(FrameworkParams.BROWSER_IE)) {
 //			wbdv.quit();
 //			driver.quit();
