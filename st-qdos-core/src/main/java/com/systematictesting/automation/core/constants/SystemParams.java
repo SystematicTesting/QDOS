@@ -3,7 +3,9 @@
  * All rights reserved. 
  */
 package com.systematictesting.automation.core.constants;
- 
+
+import java.io.File;
+
 public interface SystemParams {
 
 	//String TEST_SUITES_LOCATION = "testSuitesLocation";
@@ -19,6 +21,11 @@ public interface SystemParams {
 	String EMAIL = "email";
 	String API_KEY = "apiKey";
 	String API_KEY_TO_POST_REPORT = "activeAPIkey";
+	
+	String SCREEN_HEIGHT = "screen.height";
+	String SCREEN_WIDTH = "screen.width";
+	
+	String DOWNLOAD_FILE_LOCATION = System.getProperty(SystemParams.JAVA_TMP_DIR) + File.separator + "downloads";
 	
 	String PATH_WINDOWS_CHROME_DRIVER = "webdriver.chrome.driver";
 	String PATH_WINDOWS_FIREFOX_DRIVER = "webdriver.gecko.driver";

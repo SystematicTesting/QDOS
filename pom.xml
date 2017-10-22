@@ -146,10 +146,16 @@ All rights reserved.
 		<selenium-ie-driver>2.44.0</selenium-ie-driver>
 		<phantomjsdriver>1.2.1</phantomjsdriver>
 		<httpmime>4.3.6</httpmime>
+		<pdfbox>2.0.7</pdfbox>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.apache.pdfbox</groupId>
+				<artifactId>pdfbox</artifactId>
+				<version>${pdfbox}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>

@@ -36,6 +36,8 @@ public class CommandLineParamsUtils {
 	private String finishTestCaseURL = "/module/qdos/client/finishTestCase.rest";
 	private String pushTestStepURL = "/module/qdos/client/pushTestStep.rest";
 	private String testSuiteName = System.getProperty(SystemParams.TEST_SUITE_NAME);
+	private String screenHeightInPixel = System.getProperty(SystemParams.SCREEN_HEIGHT);
+	private String screenWidthInPixel = System.getProperty(SystemParams.SCREEN_WIDTH);
 	private String browserName = System.getProperty(SystemParams.BROWSER_NAME);
 	private String tracerStatus = System.getProperty(SystemParams.TRACER_STATUS);
 	private String email = System.getProperty(SystemParams.EMAIL);
@@ -247,6 +249,14 @@ public class CommandLineParamsUtils {
 //		return environment;
 //	}
 
+	public String getScreenHeightInPixel() {
+		return screenHeightInPixel;
+	}
+
+	public String getScreenWidthInPixel() {
+		return screenWidthInPixel;
+	}
+
 	public String getSiteName() {
 		if (StringUtils.isBlank(siteName)) {
 			siteName = "NOT-SPECIFIED";
@@ -321,6 +331,16 @@ public class CommandLineParamsUtils {
 	public void setTestSuiteName(String testSuiteName) {
 		System.setProperty(SystemParams.TEST_SUITE_NAME, testSuiteName);
 		this.testSuiteName = testSuiteName;
+	}
+	
+	public void setScreenHeightInPixel(String screenHeightInPixel) {
+		System.setProperty(SystemParams.SCREEN_HEIGHT, screenHeightInPixel);
+		this.screenHeightInPixel = screenHeightInPixel;
+	}
+	
+	public void setScreenWidthInPixel(String screenWidthInPixel) {
+		System.setProperty(SystemParams.SCREEN_WIDTH, screenWidthInPixel);
+		this.screenWidthInPixel = screenWidthInPixel;
 	}
 
 	public void setBrowserName(String browserName) {

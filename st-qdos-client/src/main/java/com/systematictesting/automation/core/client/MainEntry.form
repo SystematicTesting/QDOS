@@ -55,7 +55,7 @@
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="loggingScrollPane" pref="174" max="32767" attributes="0"/>
+              <Component id="loggingScrollPane" pref="170" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -180,17 +180,9 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
-                              <Component id="saveButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="203" max="32767" attributes="0"/>
-                          <Component id="ExitButton" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="versionNumberTextbox" alignment="0" max="32767" attributes="0"/>
                       <Component id="siteNameTextBox" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
@@ -204,7 +196,16 @@
                               <Component id="browserComboBox" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <Component id="suiteNameTextBox" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
+                              <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="203" max="32767" attributes="0"/>
+                          <Component id="ExitButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                               <Component id="alwaysTakeScreenshot" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -216,10 +217,20 @@
                               <Component id="testSuiteLocation" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="screenSizeLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="screenWidthInPixel" min="-2" pref="93" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                  <Component id="screenWidth" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="screenHeightInPixel" min="-2" pref="79" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="screenHeight" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="suiteNameTextBox" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -259,20 +270,20 @@
                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="alwaysTakeScreenshot" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace pref="71" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ExitButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="screenSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="screenWidthInPixel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="screenWidth" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="screenHeightInPixel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="screenHeight" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="ExitButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="saveButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -373,6 +384,31 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="screenSizeLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Screen Size"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="screenWidthInPixel">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="screenWidthInPixelActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="screenWidth">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="width X"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="screenHeightInPixel">
+        </Component>
+        <Component class="javax.swing.JLabel" name="screenHeight">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="height"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
