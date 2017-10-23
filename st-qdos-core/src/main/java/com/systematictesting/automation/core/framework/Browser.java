@@ -72,6 +72,7 @@ public class Browser {
 				options.setExperimentalOption("prefs", chromePrefs);
 				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+				capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, "ignore");
 				
 				if (StringUtils.isNotBlank(CommandLineParamsUtils.getInstance().getProxyUrl())) {
 					setProxyServerInBrowserCapabilities(capabilities);

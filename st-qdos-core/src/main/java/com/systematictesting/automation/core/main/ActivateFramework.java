@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.UnhandledAlertException;
 
 import com.systematictesting.automation.core.bean.TestCaseDetails;
 import com.systematictesting.automation.core.bean.TestStepDetails;
@@ -297,7 +298,10 @@ public class ActivateFramework implements Framework {
 	
 								}
 	
-							} catch (Exception e) {
+							} catch (UnhandledAlertException e){
+								log.log(Level.INFO, "Unhandled Alert Detected. Please manage this alert in next test step. Here is the stack trace details: \n ", e);
+							}
+							catch (Exception e) {
 								e.printStackTrace();
 								log.log(Level.SEVERE, "Exception Occured while running test case : \n ", e);
 								Tracer.getInstance().logEvents(TestReportUtils.now(LOGGGING_TIME_FORMAT) + ":-->"+ dataSetId + ":-->"  + currentTSID + ":" + Result.ABORTED);
