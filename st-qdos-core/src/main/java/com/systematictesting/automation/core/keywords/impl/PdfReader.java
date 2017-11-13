@@ -163,3 +163,59 @@ public class PdfReader implements Process {
 	}
 
 }
+
+/*
+ * Sample data validation rules which will go inside the Excel Sheet are:
+ * 
+{
+  "pages": [
+    {
+      "pageNumber": 1,
+      "dataList": [
+        "August",
+        "UKPRN : 10004180",
+        "Collection Period: R03 Year: 2017/18",
+        "Apprenticeships for starts on or after 1 May 2017",
+        "Training (excluding English & Maths) 0.00 0.00",
+        "Additional payments for employers 0.00 0.00",
+        "Additional payments for providers 0.00 0.00 0.00 0.00",
+        "Advanced Learner Loans",
+        "Advanced Learner Loans Bursary 0.00 0.00 0.00"
+      ]
+    },
+    {
+      "pageNumber": 2,
+      "dataList": [
+        "September",
+        "UKPRN : 10004180",
+        "Apprenticeships for starts on or after 1 May 2017",
+        "16-18 Levy contracted",
+        "Collection Period: R03 Year: 2017/18",
+        "Apprenticeships for starts before 1 May 2017",
+        "Training (excluding English & Maths) 0.00 0.00",
+        "Additional payments for employers 0.00 0.00",
+        "Additional payments for providers 0.00 0.00 0.00 0.00",
+        "Advanced Learner Loans",
+        "Advanced Learner Loans Bursary 0.00 0.00 0.00"
+      ]
+    },
+    {
+      "pageNumber": 3,
+      "dataList": [
+        "October",
+        "UKPRN : 10004180",
+        "Collection Period: R03 Year: 2017/18",
+        "Apprenticeships for starts before 1 May 2017",
+        "Training (excluding English & Maths) -55.00 -555.00",
+        "Additional payments for providers 1000.00 1000.00 4000.00 60000.00",
+        "Additional payments for employers 10000.00 200000.00",
+        "Training (excluding English & Maths) 15000.00 1.00",
+        "Additional payments for providers 21.00 88.00 49.00 -888.00",
+        "Additional payments for employers 100000.00 71.00",
+        "Advanced Learner Loans Bursary 9.00 10.00 19.00",
+        "Advanced Learner Loans"
+      ]
+    }
+  ]
+}
+ */
