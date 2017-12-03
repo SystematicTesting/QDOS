@@ -32,4 +32,4 @@ Skills required to extend QDOS Framework:
 A getting started guide has been created in [WIKI](https://github.com/SystematicTesting/QDOS/wiki/Getting-Started---Guide) section of Github. Feel free to let us know if you need more details.
 
 # Want to host [QDOS Console](http://qdos.systematictesting.com) in company premise ? 
-Hosting QDOS Console in company premise is possible. Please contact on email address : sharad@systematictesting.com
+Hosting QDOS Console in company premise is possible. Please contact on email address : sharad@sharadtech.com
