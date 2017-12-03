@@ -282,6 +282,7 @@ public class SReportCommsUtils {
 			if (!isNew){
 				jsonTCD.put("status", objTestCaseDetails.getStatus());
 				jsonTCD.put("endTime", objTestCaseDetails.getEndTime());
+				jsonTCD.put("videoFile", objTestCaseDetails.getVideoFile()==null?"DISABLED":objTestCaseDetails.getVideoFile());
 			}
 			
 			log.log(Level.INFO, "Updating Test Case with parameters : "+

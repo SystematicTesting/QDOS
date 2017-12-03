@@ -35,8 +35,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 import com.systematictesting.automation.core.bean.SuiteReport;
 import com.systematictesting.automation.core.bean.TestCaseDetails;
@@ -46,7 +44,6 @@ import com.systematictesting.automation.core.constants.FrameworkParams;
 import com.systematictesting.automation.core.constants.Result;
 import com.systematictesting.automation.core.constants.SReportReqParams;
 import com.systematictesting.automation.core.constants.SystemParams;
-import com.systematictesting.automation.core.framework.Browser;
 import com.systematictesting.automation.core.utils.CommandLineParamsUtils;
 
 public class Report {
@@ -300,15 +297,7 @@ public class Report {
 		return result;
 	}
 
-	public static void takeScreenShot(String fileName, String testSuiteName, String versionNumber, String stepId,
-			String testCaseId, String dataSetId) {
-		log.log(Level.INFO, "TAKING SCREEN SHOT NOW with FILE NAME : " + fileName);
-		File scrFile = ((TakesScreenshot) Browser.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
-		uploadFile(testSuiteName, scrFile, fileName, versionNumber, stepId, testCaseId, dataSetId);
-
-	}
-
-	private static void uploadFile(String testSuiteName, File file, String requestFileName, String requestVersionNumber,
+	public static void uploadFile(String testSuiteName, File file, String requestFileName, String requestVersionNumber,
 			String requestStepId, String requestTestCaseId, String requestDataSetId) {
 		if (CommandLineParamsUtils.getInstance().getScreenshotUploadLocation() != null) {
 			CloseableHttpClient httpclient = createHttpClient();
@@ -377,6 +366,7 @@ public class Report {
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 		cm.setMaxTotal(306);
 		cm.setDefaultMaxPerRoute(108);
+		@SuppressWarnings("deprecation")
 		Builder builder = RequestConfig.custom()
 				.setSocketTimeout(30000)
 			    .setConnectTimeout(30000)

@@ -18,6 +18,7 @@ public class TestCaseDetails {
 	private long endTimeInMilliseconds;
 	private String statusClass;
 	private List<TestStepDetails> testStepsData = new ArrayList<TestStepDetails>();
+	private String videoFile;
 	
 	public long getStartTimeInMilliseconds() {
 		return startTimeInMilliseconds;
@@ -70,8 +71,17 @@ public class TestCaseDetails {
 	public List<TestStepDetails> getTestStepsData() {
 		return testStepsData;
 	}
+	public String getVideoFile() {
+		return videoFile;
+	}
+	public void setVideoFile(String videoFile) {
+		this.videoFile = videoFile;
+	}
 	@Override
 	public String toString() {
-		return "TestCaseDetails [testCaseId=" + testCaseId + ", testCaseName=" + testCaseName + ", status=" + status + ", startTime=" + startTime + ", endTime=" + endTime + ", startTimeInMilliseconds=" + startTimeInMilliseconds + ", endTimeInMilliseconds=" + endTimeInMilliseconds + ", statusClass=" + statusClass + ", testStepsData=" + testStepsData + "]";
+		return "TestCaseDetails [testCaseId=" + testCaseId + ", testCaseName=" + testCaseName + ", status=" + status
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", startTimeInMilliseconds="
+				+ startTimeInMilliseconds + ", endTimeInMilliseconds=" + endTimeInMilliseconds + ", statusClass="
+				+ statusClass + ", testStepsData=" + testStepsData + ", videoFile=" + videoFile + "]";
 	}
 }

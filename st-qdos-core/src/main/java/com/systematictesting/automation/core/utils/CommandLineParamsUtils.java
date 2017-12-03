@@ -45,6 +45,8 @@ public class CommandLineParamsUtils {
 	private String proxyUrl = System.getProperty(SystemParams.PROXY_URL);
 	private String proxyForSReport = System.getProperty(SystemParams.PROXY_SREPORT_URL);
 	private String alwaysCaptureScreenshot = System.getProperty(SystemParams.ALWAYS_CAPTURE_SCREENSHOT);
+	private String videoRecorderAlwaysFlag = System.getProperty(SystemParams.ALWAYS_RECORD_VIDEO_OF_TESTCASES);
+	private String videoRecorderOnlyIfTestCaseFailed = System.getProperty(SystemParams.RECORD_VIDEO_OF_FAILED_TESTCASES);
 	private String captureScreenshotOnFailedEvent = System.getProperty(SystemParams.CAPTURE_SCREENSHOT_ON_FAILED_EVENT);
 	private String executedFromCommandPrompt = System.getProperty(SystemParams.EXECUTED_FROM_COMMAND_PROMPT);
 
@@ -89,6 +91,20 @@ public class CommandLineParamsUtils {
 			alwaysCaptureScreenshot = "";
 		}
 		return alwaysCaptureScreenshot;
+	}
+	
+	public String getVideoRecorderAlwaysFlag(){
+		if (StringUtils.isBlank(videoRecorderAlwaysFlag)){
+			videoRecorderAlwaysFlag = "";
+		}
+		return videoRecorderAlwaysFlag;
+	}
+	
+	public String getVideoRecorderOnlyIfTestCaseFailed(){
+		if (StringUtils.isBlank(videoRecorderOnlyIfTestCaseFailed)){
+			videoRecorderOnlyIfTestCaseFailed = "";
+		}
+		return videoRecorderOnlyIfTestCaseFailed;
 	}
 
 	public String getCaptureScreenshotOnFailedEvent() {
@@ -386,5 +402,16 @@ public class CommandLineParamsUtils {
 		System.setProperty(SystemParams.API_KEY, apiKey);
 		this.apiKey = apiKey;
 	}
+
+	public void setVideoRecorderAlwaysFlag(String videoRecorderAlwaysFlag) {
+		System.setProperty(SystemParams.ALWAYS_RECORD_VIDEO_OF_TESTCASES, videoRecorderAlwaysFlag);
+		this.videoRecorderAlwaysFlag = videoRecorderAlwaysFlag;
+	}
+	
+	public void setVideoRecorderOnlyIfTestCaseFailed(String videoRecorderOnlyIfTestCaseFailed) {
+		System.setProperty(SystemParams.RECORD_VIDEO_OF_FAILED_TESTCASES, videoRecorderOnlyIfTestCaseFailed);
+		this.videoRecorderOnlyIfTestCaseFailed = videoRecorderOnlyIfTestCaseFailed;
+	}
+	
 
 }
