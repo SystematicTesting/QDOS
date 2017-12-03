@@ -54,4 +54,6 @@ public interface SystemParams {
 	String FILE_PHANTOMJS_DRIVER_OS_MAC = "phantomjs";
 	
 	String DRIVERS_DIR = "drivers";
+	String ALWAYS_RECORD_VIDEO_OF_TESTCASES = "always.record.testcase.video";
+	String RECORD_VIDEO_OF_FAILED_TESTCASES = "record.failed.testcase.video";
 }

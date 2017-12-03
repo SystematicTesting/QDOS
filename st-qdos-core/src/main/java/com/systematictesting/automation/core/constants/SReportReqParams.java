@@ -14,6 +14,8 @@ public interface SReportReqParams {
 	String CATALOG_VERSION = "catalogVersion";
 	String TEST_SUITE_NAME = "suiteName";
 	String SCREENSHOT_FILENAME = "fileName";
+	String SOURCE = "source";
+	String APP_SERVER = "APP_SERVER";
 	String SUITE_DURATION = "suiteDuration";
 	String SITE_DURATION = "siteDuration";
 	String TEST_CASE_DATA = "testCaseData";

@@ -34,7 +34,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="testSuiteInfoPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
           <Component id="loggingScrollPane" alignment="0" max="32767" attributes="0"/>
       </Group>
@@ -155,7 +155,8 @@
         </Component>
         <Component class="javax.swing.JTextField" name="reportCollectorServerNameTextBox">
           <Properties>
-            <Property name="text" type="java.lang.String" value="http://app.systematictesting.com"/>
+            <Property name="text" type="java.lang.String" value="http://qdos.systematictesting.com"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="proxyServerNameAndPortLabel">
@@ -202,13 +203,11 @@
                               <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
                               <Component id="saveButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="203" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="ExitButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                              <Component id="alwaysTakeScreenshot" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -218,18 +217,31 @@
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="screenSizeLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="screenWidthInPixel" min="-2" pref="93" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                                  <Component id="screenWidth" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="screenSizeLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="screenWidthInPixel" min="-2" pref="93" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                          <Component id="screenWidth" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="alwaysTakeScreenshot" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="screenHeightInPixel" min="-2" pref="79" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="screenHeight" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                      <Component id="videoRecorderAlwaysFlag" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="screenHeightInPixel" min="-2" pref="79" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="screenHeight" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="onlyIfTestCaseFailed" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="17" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -267,11 +279,20 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="suiteNameTextBox" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="alwaysTakeScreenshot" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="alwaysTakeScreenshot" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="videoRecorderAlwaysFlag" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="takeScreenshotWhenTestStepFailed" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="takeScreenshotWhenTestStepFailed" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="onlyIfTestCaseFailed" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="screenSizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -408,6 +429,25 @@
         <Component class="javax.swing.JLabel" name="screenHeight">
           <Properties>
             <Property name="text" type="java.lang.String" value="height"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="videoRecorderAlwaysFlag">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Always"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="videoRecorderAlwaysFlagActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Capture Video"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="onlyIfTestCaseFailed">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Only if Test Case Failed"/>
           </Properties>
         </Component>
       </SubComponents>

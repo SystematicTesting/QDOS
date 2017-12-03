@@ -17,6 +17,14 @@ All rights reserved.
 	
 	<dependencies>
 		<dependency>
+			<groupId>com.systematictesting</groupId>
+			<artifactId>st-qdos-recorder</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.amazonaws</groupId>
+		    <artifactId>aws-java-sdk-s3</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 		</dependency>

@@ -114,6 +114,7 @@ All rights reserved.
 	<modules>
 		<module>st-qdos-client</module>
 		<module>st-qdos-core</module>
+		<module>st-qdos-recorder</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -135,7 +136,7 @@ All rights reserved.
 		<xml-apis>1.4.01</xml-apis>
 		<commons-fileupload>1.2</commons-fileupload>
 		<commons-httpclient>3.1</commons-httpclient>
-		<httpclient>4.3.4</httpclient>
+		<httpclient>4.5.2</httpclient>
 		<cglib>2.2.2</cglib>
 		<jackson>1.9.10</jackson>
 		<json>20080701</json>
@@ -147,10 +148,16 @@ All rights reserved.
 		<phantomjsdriver>1.2.1</phantomjsdriver>
 		<httpmime>4.3.6</httpmime>
 		<pdfbox>2.0.7</pdfbox>
+		<aws-java-sdk-s3>1.11.235</aws-java-sdk-s3>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+			    <groupId>com.amazonaws</groupId>
+			    <artifactId>aws-java-sdk-s3</artifactId>
+			    <version>${aws-java-sdk-s3}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.pdfbox</groupId>
 				<artifactId>pdfbox</artifactId>
@@ -271,6 +278,11 @@ All rights reserved.
 			<dependency>
 				<groupId>com.systematictesting</groupId>
 				<artifactId>st-qdos-core</artifactId>
+				<version>5.2.4-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.systematictesting</groupId>
+				<artifactId>st-qdos-recorder</artifactId>
 				<version>5.2.4-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

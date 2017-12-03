@@ -80,6 +80,9 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
         screenWidth = new javax.swing.JLabel();
         screenHeightInPixel = new javax.swing.JTextField();
         screenHeight = new javax.swing.JLabel();
+        videoRecorderAlwaysFlag = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        videoRecorderOnlyIfTestCaseFailed = new javax.swing.JCheckBox();
         logoPanel = new javax.swing.JPanel();
         logoLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -113,6 +116,7 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
         jLabel9.setText("Report Collector Server URL *");
 
         reportCollectorServerNameTextBox.setText("http://qdos.systematictesting.com");
+        reportCollectorServerNameTextBox.setToolTipText("");
 
         proxyServerNameAndPortLabel.setText("Proxy for Browser (server:port)");
         proxyServerNameAndPortLabel.setToolTipText("");
@@ -215,11 +219,15 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
 
         screenSizeLabel.setText("Screen Size");
 
-        screenWidthInPixel.setToolTipText("");
-
         screenWidth.setText("width X");
 
         screenHeight.setText("height");
+
+        videoRecorderAlwaysFlag.setText("Always");
+
+        jLabel6.setText("Capture Video");
+
+        videoRecorderOnlyIfTestCaseFailed.setText("Only if Test Case Failed");
 
         javax.swing.GroupLayout testSuiteInfoPanelLayout = new javax.swing.GroupLayout(testSuiteInfoPanel);
         testSuiteInfoPanel.setLayout(testSuiteInfoPanelLayout);
@@ -243,12 +251,10 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
                         .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(takeScreenshotWhenTestStepFailed)
                             .addComponent(saveButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ExitButton))
                     .addGroup(testSuiteInfoPanelLayout.createSequentialGroup()
                         .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(alwaysTakeScreenshot)
                             .addGroup(testSuiteInfoPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -257,16 +263,25 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addGroup(testSuiteInfoPanelLayout.createSequentialGroup()
-                                .addComponent(screenSizeLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(screenWidthInPixel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)
-                                .addComponent(screenWidth)
+                                .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(testSuiteInfoPanelLayout.createSequentialGroup()
+                                        .addComponent(screenSizeLabel)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(screenWidthInPixel, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2)
+                                        .addComponent(screenWidth))
+                                    .addComponent(alwaysTakeScreenshot)
+                                    .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(screenHeightInPixel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(screenHeight)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(videoRecorderAlwaysFlag)
+                                    .addGroup(testSuiteInfoPanelLayout.createSequentialGroup()
+                                        .addComponent(screenHeightInPixel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(screenHeight))
+                                    .addComponent(videoRecorderOnlyIfTestCaseFailed))))
+                        .addGap(0, 17, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         testSuiteInfoPanelLayout.setVerticalGroup(
@@ -297,11 +312,17 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(suiteNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel10)
+                .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(alwaysTakeScreenshot)
+                .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(alwaysTakeScreenshot)
+                    .addComponent(videoRecorderAlwaysFlag))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(takeScreenshotWhenTestStepFailed)
+                .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(takeScreenshotWhenTestStepFailed)
+                    .addComponent(videoRecorderOnlyIfTestCaseFailed))
                 .addGap(18, 18, 18)
                 .addGroup(testSuiteInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(screenSizeLabel)
@@ -387,7 +408,7 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(testSuiteInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
             .addComponent(loggingScrollPane)
         );
         layout.setVerticalGroup(
@@ -461,6 +482,8 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
             CommandLineParamsUtils.getInstance().setCaptureScreenshotOnFailedEvent(this.takeScreenshotWhenTestStepFailed.isSelected()+"");
             CommandLineParamsUtils.getInstance().setScreenHeightInPixel(this.screenHeightInPixel.getText());
             CommandLineParamsUtils.getInstance().setScreenWidthInPixel(this.screenWidthInPixel.getText());
+            CommandLineParamsUtils.getInstance().setVideoRecorderAlwaysFlag(this.videoRecorderAlwaysFlag.isSelected()+"");
+            CommandLineParamsUtils.getInstance().setVideoRecorderOnlyIfTestCaseFailed(this.videoRecorderOnlyIfTestCaseFailed.isSelected()+"");
             
             if (this.proxyServerNameAndPort.getText()!=null && this.proxyServerNameAndPort.getText().length()>0) {
                 CommandLineParamsUtils.getInstance().setProxyUrl(this.proxyServerNameAndPort.getText());
@@ -527,6 +550,8 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
         configMap.put("takeScreenshotWhenTestStepFailed", this.takeScreenshotWhenTestStepFailed.isSelected()+"");
         configMap.put("screenHeightInPixel", this.screenHeightInPixel.getText());
         configMap.put("screenWidthInPixel", this.screenWidthInPixel.getText());
+        configMap.put("videoRecorderAlwaysFlag", this.videoRecorderAlwaysFlag.isSelected()+"");
+        configMap.put("videoRecorderOnlyIfTestCaseFailed", this.videoRecorderOnlyIfTestCaseFailed.isSelected()+"");
         
         try {
             FileOutputStream fos = new FileOutputStream("configurations.ser");
@@ -585,6 +610,8 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
             objMainEntry.takeScreenshotWhenTestStepFailed.setSelected(Boolean.valueOf(configMap.get("takeScreenshotWhenTestStepFailed")));
             objMainEntry.screenHeightInPixel.setText(configMap.get("screenHeightInPixel"));
             objMainEntry.screenWidthInPixel.setText(configMap.get("screenWidthInPixel"));
+            objMainEntry.videoRecorderAlwaysFlag.setSelected(Boolean.valueOf(configMap.get("videoRecorderAlwaysFlag")));
+            objMainEntry.videoRecorderOnlyIfTestCaseFailed.setSelected(Boolean.valueOf(configMap.get("videoRecorderOnlyIfTestCaseFailed")));
         }
         try {
             CommandLineParamsUtils.getInstance().getApiKey();
@@ -663,6 +690,7 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -671,6 +699,7 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
     private javax.swing.JScrollPane loggingScrollPane;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel logoPanel;
+    private javax.swing.JCheckBox videoRecorderOnlyIfTestCaseFailed;
     private javax.swing.JComboBox<String> operatingSystemDropDown;
     private javax.swing.JLabel operatingSystemLabel;
     private javax.swing.JTextField proxyForReportCollector;
@@ -690,5 +719,6 @@ public class MainEntry extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel testSuiteLocation;
     private javax.swing.JToggleButton tracerToggleButton;
     private javax.swing.JTextField versionNumberTextbox;
+    private javax.swing.JCheckBox videoRecorderAlwaysFlag;
     // End of variables declaration//GEN-END:variables
 }

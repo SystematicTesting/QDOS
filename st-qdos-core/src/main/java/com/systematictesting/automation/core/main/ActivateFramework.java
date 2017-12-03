@@ -4,13 +4,26 @@
  */
 package com.systematictesting.automation.core.main;
 
+import java.awt.AWTException;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnhandledAlertException;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.systematictesting.automation.core.bean.TestCaseDetails;
 import com.systematictesting.automation.core.bean.TestStepDetails;
 import com.systematictesting.automation.core.constants.FrameworkParams;
@@ -25,10 +38,17 @@ import com.systematictesting.automation.core.reporting.TestReportUtils;
 import com.systematictesting.automation.core.utils.CommandLineParamsUtils;
 import com.systematictesting.automation.core.utils.GeneralFileUtils;
 import com.systematictesting.automation.core.utils.SReportCommsUtils;
+import com.systematictesting.media.Format;
+import com.systematictesting.media.FormatKeys.MediaType;
+import com.systematictesting.media.Registry;
+import com.systematictesting.media.VideoFormatKeys;
+import com.systematictesting.media.math.Rational;
+import com.systematictesting.qdos.beans.AwsCreds;
 import com.systematictesting.qdos.beans.QdosReportStartVersion;
 import com.systematictesting.qdos.beans.SingleTestSuite;
 import com.systematictesting.qdos.beans.TestCaseData;
 import com.systematictesting.qdos.beans.TestStepData;
+import com.systematictesting.screenrecorder.ScreenRecorder;
 
 public class ActivateFramework implements Framework {
  
@@ -42,9 +62,17 @@ public class ActivateFramework implements Framework {
 	private String PACKAGE_NAME_FOR_KEYWORDS = "com.systematictesting.automation.core.keywords.impl";
 	
 	private QdosReportStartVersion objQdosReportStartVersion = null;
+	private AwsCreds awsCreds = null;
+	private AmazonS3 s3client = null;
 	private long siteDurationStartTime;
 	private long suiteDurationStartTime;
 	private long testCaseDurationStartTime;
+	
+	private ScreenRecorder screenRecorder;
+	private GraphicsConfiguration gc;
+	private Format fileFormat;
+	private Format screenFormat;
+	private Format mouseFormat;
 	
 	public static String TextStored= null;//to store and track the text stored variable.
 	public static String ParentWindowHandler=null;// window handler for parent window
@@ -58,10 +86,27 @@ public class ActivateFramework implements Framework {
 	public void activateTestingFramework() {
 		startTesting();
 		if (this.startSiteVersion()!=null){
+			this.setupAWSClient();
+			this.setupVideoRecorder();
 			this.executeTest();
 			this.finishSiteVersion();
 		}
 		endScript();
+	}
+
+	private void setupVideoRecorder() {
+		gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+		fileFormat = new Format(VideoFormatKeys.MediaTypeKey, MediaType.FILE, VideoFormatKeys.MimeTypeKey, VideoFormatKeys.MIME_AVI);
+		screenFormat = new Format(VideoFormatKeys.MediaTypeKey, MediaType.VIDEO, VideoFormatKeys.EncodingKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,VideoFormatKeys.CompressorNameKey, VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,VideoFormatKeys.DepthKey, 24, VideoFormatKeys.FrameRateKey, Rational.valueOf(15),VideoFormatKeys.QualityKey, 1.0f,VideoFormatKeys.KeyFrameIntervalKey, 15 * 60);
+		mouseFormat = new Format(VideoFormatKeys.MediaTypeKey, MediaType.VIDEO, VideoFormatKeys.EncodingKey, "black", VideoFormatKeys.FrameRateKey, Rational.valueOf(30));
+	}
+
+	private void setupAWSClient() {
+		awsCreds = objQdosReportStartVersion.getAwsCredentials();
+		if (awsCreds!=null){
+			AWSCredentials credentials = new BasicAWSCredentials(awsCreds.getAccessKey(), awsCreds.getSecretKey());
+			s3client = AmazonS3ClientBuilder.standard().withRegion(awsCreds.getRegion()).withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+		}
 	}
 
 	public static void startTesting() {
@@ -241,6 +286,10 @@ public class ActivateFramework implements Framework {
 				Tracer.getInstance().logEvents(TestReportUtils.now(LOGGGING_TIME_FORMAT) + ": **" + currentTestID + ":" + testCaseIdName);
 	
 				if (testCaseMode.equals(TEST_CASE_MODE_AUTOMATE)) {
+
+					String testCaseVideoFileName = startTestCaseVideoRecording(testSuite,currentTestID);
+					objTestCaseDetails.setVideoFile(testCaseVideoFileName);
+
 					boolean isProceedOnFail = true;
 					for (int tsid = 0; tsid < activeTestCase.getTestStepsData().size(); tsid++) {
 						TestStepData testStep = activeTestCase.getTestStepsData().get(tsid);
@@ -276,7 +325,7 @@ public class ActivateFramework implements Framework {
 								}
 								objTestStepDetails.setEndTimeInMilliseconds(System.currentTimeMillis());
 	
-								handleScreenShotsOfSteps(testSuite.getTestSuite().getSuiteName(), objTestCaseDetails, objTestStepDetails,result);
+								handleScreenShotsOfSteps(testSuite, objTestCaseDetails, objTestStepDetails,result);
 								
 								if (result.startsWith(Result.FAIL)) {
 									Tracer.getInstance().logEvents(TestReportUtils.now(LOGGGING_TIME_FORMAT) + ":-->"+ dataSetId + ":-->"  + currentTSID + ":" + result);
@@ -337,6 +386,7 @@ public class ActivateFramework implements Framework {
 						objTestCaseDetails.setStatusClass(Result.PASS.toLowerCase());
 						summaryPassCount++;
 					}
+					stopTestCaseVideoRecording(testSuite, objTestCaseDetails);
 				} else {
 					Tracer.getInstance().logEvents(TestReportUtils.now(LOGGGING_TIME_FORMAT) + ":**" + currentTestID + ":" + Result.MANUAL);
 					objTestCaseDetails.setStatus(Result.MANUAL);
@@ -352,9 +402,72 @@ public class ActivateFramework implements Framework {
 			}
 		}
 	}
+	
+	private void stopTestCaseVideoRecording(SingleTestSuite testSuite, TestCaseDetails objTestCaseDetails){
+		String testSuiteName = testSuite.getTestSuite().getSuiteName();
+		if (s3client!=null && awsCreds!=null){
+			try {
+				screenRecorder.stop();
+				File destinationDir = screenRecorder.getMovieFolder();
+				String fileName = screenRecorder.getVideoFileName();
+				File scrFile = new File(destinationDir, fileName);
+				String absoluteFileName = awsCreds.getFolder() 
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getApiKey()
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getSiteName()
+						+ FrameworkParams.FILE_SEPARATOR + objQdosReportStartVersion.getNextQdosVersionNumber()
+						+ FrameworkParams.FILE_SEPARATOR + testSuiteName
+						+ FrameworkParams.FILE_SEPARATOR + fileName;
+				if (CommandLineParamsUtils.getInstance().getVideoRecorderAlwaysFlag().equals("true") || (!objTestCaseDetails.getStatus().equals(Result.PASS) && CommandLineParamsUtils.getInstance().getVideoRecorderOnlyIfTestCaseFailed().equals("true"))) {
+					Tracer.getInstance().logEvents(TestReportUtils.now(LOGGGING_TIME_FORMAT) + ":**" + objTestCaseDetails.getTestCaseId() + ": Uploading Video File to Server : " + objTestCaseDetails.getVideoFile());
+					log.log(Level.INFO, "NOW, UPLOADING VIDEO FILE : " + objTestCaseDetails.getVideoFile());
+					s3client.putObject(new PutObjectRequest(awsCreds.getBucketName(), absoluteFileName, scrFile).withCannedAcl(CannedAccessControlList.PublicRead));
+					log.log(Level.INFO, "VIDEO FILE : " + objTestCaseDetails.getVideoFile() + " : Uploaded SUCCESSFULLY!");
+					scrFile.delete();
+				} else {
+					scrFile.delete();
+					objTestCaseDetails.setVideoFile("DISABLED");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-	private void handleScreenShotsOfSteps(String testSuiteName, TestCaseDetails objTestCaseDetails,
-			TestStepDetails objTestStepDetails, String result) {
+	private String startTestCaseVideoRecording(SingleTestSuite testSuite, String currentTestID) {
+		String testSuiteName = testSuite.getTestSuite().getSuiteName();
+		String testCaseVideoFileName = currentTestID+"."+Registry.getInstance().getExtension(fileFormat);
+		if (s3client!=null && awsCreds!=null){
+			try {
+				String javaTmpLocation = System.getProperty(SystemParams.JAVA_TMP_DIR);
+				String testCaseVideoDir = javaTmpLocation + File.separator + "SystematicTesting" + File.separator + "VIDEOS" + File.separator + testSuiteName + File.separator;
+				File destPathDirectory = new File(testCaseVideoDir);
+				if (!destPathDirectory.isDirectory()) {
+					destPathDirectory.mkdirs();
+				}
+				File testCaseVideoFile = new File(destPathDirectory, testCaseVideoFileName);
+				if (testCaseVideoFile.exists()){
+					testCaseVideoFile.delete();
+				}
+				screenRecorder = new ScreenRecorder(gc,gc.getBounds(),fileFormat,screenFormat,mouseFormat,destPathDirectory, testCaseVideoFileName);
+				screenRecorder.start();
+				String awsAbsoluteFileName = awsCreds.getFolder() 
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getApiKey()
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getSiteName()
+						+ FrameworkParams.FILE_SEPARATOR + objQdosReportStartVersion.getNextQdosVersionNumber()
+						+ FrameworkParams.FILE_SEPARATOR + testSuiteName
+						+ FrameworkParams.FILE_SEPARATOR + testCaseVideoFileName;
+				return awsCreds.getHostingDomain() + FrameworkParams.FILE_SEPARATOR + awsAbsoluteFileName;
+			} catch (IOException | AWTException e) {
+				e.printStackTrace();
+				return "NOT SUPPORTED";
+			}
+		} else {
+			return "NOT SUPPORTED";
+		}
+	}
+
+	private void handleScreenShotsOfSteps(SingleTestSuite testSuite, TestCaseDetails objTestCaseDetails, TestStepDetails objTestStepDetails, String result) {
+		String testSuiteName = testSuite.getTestSuite().getSuiteName();
 		boolean takeScreenShot = false;
 		if (CommandLineParamsUtils.getInstance().getCaptureScreenshotOnFailedEvent().equals("true") && !result.equals(Result.PASS)){
 			takeScreenShot = true;
@@ -366,18 +479,41 @@ public class ActivateFramework implements Framework {
 			String testCaseScreenShotFileName = objTestCaseDetails.getTestCaseId() + "_" + objTestStepDetails.getDataSetId() + "_" + objTestStepDetails.getStepId() + "_" + CommandLineParamsUtils.getInstance().getBuildVersion();
 			testCaseScreenShotFileName = testCaseScreenShotFileName.replaceAll("[^\\w\\s\\-_]", "") + ".jpg";
 			log.log(Level.INFO, "SCREEN SHOT FILE NAME : " + testCaseScreenShotFileName);
-			Report.takeScreenShot(testCaseScreenShotFileName, testSuiteName, objQdosReportStartVersion.getNextQdosVersionNumber(), objTestStepDetails.getStepId(), objTestCaseDetails.getTestCaseId(), objTestStepDetails.getDataSetId());
+			log.log(Level.INFO, "TAKING SCREEN SHOT NOW with FILE NAME : " + testCaseScreenShotFileName);
+			File scrFile = ((TakesScreenshot) Browser.getInstance().getDriver()).getScreenshotAs(OutputType.FILE);
+
+			if (s3client!=null && awsCreds!=null){
+				String absoluteFileName = awsCreds.getFolder() 
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getApiKey()
+						+ FrameworkParams.FILE_SEPARATOR + CommandLineParamsUtils.getInstance().getSiteName()
+						+ FrameworkParams.FILE_SEPARATOR + objQdosReportStartVersion.getNextQdosVersionNumber()
+						+ FrameworkParams.FILE_SEPARATOR + testSuiteName
+						+ FrameworkParams.FILE_SEPARATOR + objTestCaseDetails.getTestCaseId()
+						+ FrameworkParams.FILE_SEPARATOR + objTestStepDetails.getDataSetId()
+						+ FrameworkParams.FILE_SEPARATOR + objTestStepDetails.getStepId()
+						+ FrameworkParams.FILE_SEPARATOR + testCaseScreenShotFileName;
+				log.log(Level.INFO, "Now, UPLOADING FILE NAME : " + testCaseScreenShotFileName);
+				s3client.putObject(new PutObjectRequest(awsCreds.getBucketName(), absoluteFileName, scrFile).withCannedAcl(CannedAccessControlList.PublicRead));
+				log.log(Level.INFO, "SCREENSHOT FILE NAME : " + testCaseScreenShotFileName+" : Uploaded Successfully!");
+				objTestStepDetails.setStepScreenShot(awsCreds.getHostingDomain() + FrameworkParams.FILE_SEPARATOR + absoluteFileName);
+			} else {
+				log.log(Level.INFO, "Now, UPLOADING FILE NAME to Application Server : " + testCaseScreenShotFileName);
+				Report.uploadFile(testSuiteName, scrFile, testCaseScreenShotFileName, objQdosReportStartVersion.getNextQdosVersionNumber(), objTestStepDetails.getStepId(), objTestCaseDetails.getTestCaseId(), objTestStepDetails.getDataSetId());
+				log.log(Level.INFO, "SCREENSHOT FILE NAME : " + testCaseScreenShotFileName+" : Uploaded Successfully!");
+				String screenshotUrl = SReportReqParams.ACTIVE_API_KEY+FrameworkParams.REQ_PARAM_VALUE_SEPARATOR+CommandLineParamsUtils.getInstance().getApiKey()+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.SITE_NAME + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + CommandLineParamsUtils.getInstance().getSiteName() +FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.VERSION_NUMBER + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objQdosReportStartVersion.getNextQdosVersionNumber() +FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.TEST_SUITE_NAME + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + testSuiteName+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.TEST_CASE_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestCaseDetails.getTestCaseId()+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.TEST_STEP_DATA_SET_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestStepDetails.getDataSetId()+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.TEST_STEP_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestStepDetails.getStepId()+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.SCREENSHOT_FILENAME+ FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + testCaseScreenShotFileName+FrameworkParams.REQ_PARAM_SEPARATOR
+						+ SReportReqParams.SOURCE+ FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + SReportReqParams.APP_SERVER;
+				objTestStepDetails.setStepScreenShot(screenshotUrl);
+			}
+
 			
-			String screenshotUrl = SReportReqParams.ACTIVE_API_KEY+FrameworkParams.REQ_PARAM_VALUE_SEPARATOR+CommandLineParamsUtils.getInstance().getApiKey()+FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.SITE_NAME + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + CommandLineParamsUtils.getInstance().getSiteName() +FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.VERSION_NUMBER + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objQdosReportStartVersion.getNextQdosVersionNumber() +FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.TEST_SUITE_NAME + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + testSuiteName+FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.TEST_CASE_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestCaseDetails.getTestCaseId()+FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.TEST_STEP_DATA_SET_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestStepDetails.getDataSetId()+FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.TEST_STEP_ID + FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + objTestStepDetails.getStepId()+FrameworkParams.REQ_PARAM_SEPARATOR
-			+ SReportReqParams.SCREENSHOT_FILENAME+ FrameworkParams.REQ_PARAM_VALUE_SEPARATOR + testCaseScreenShotFileName;
 			
-			objTestStepDetails.setStepScreenShot(screenshotUrl);
 		} else {
 			objTestStepDetails.setStepScreenShot(FrameworkParams.DISABLED);
 		}
