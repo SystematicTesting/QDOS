@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.systematictesting</groupId>
 		<artifactId>st-qdos</artifactId>
-		<version>5.2.4</version>
+		<version>5.2.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>st-qdos-recorder</artifactId>
 	<name>ST : QDOS Recorder</name>
