@@ -1,6 +1,5 @@
 package com.systematictesting.qdos.beans;
 
-
 public class SingleTestSuite {
 	public interface FIELDS {
 		String ID = "id";
@@ -13,6 +12,12 @@ public class SingleTestSuite {
 		String TEST_SUITE = "testSuite";
 		String LAST_MODIFIED_TIME = "lastmodifiedtime";
 		String CREATE_TIME = "createtime";
+		String STATUS = "status";
+	}
+	
+	public interface STATUS {
+		String COMPLETE = "COMPLETE";
+		String INCOMPLETE = "INCOMPLETE";
 	}
 	
 	private String id;
@@ -24,6 +29,8 @@ public class SingleTestSuite {
 	private String siteName;
 	
 	private String sourceType;
+
+	private String status;
 	
 	private String fileLocation;
 	private String sourceEmail;
@@ -90,12 +97,18 @@ public class SingleTestSuite {
 	public void setSourceEmail(String sourceEmail) {
 		this.sourceEmail = sourceEmail;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "SingleTestSuite [id=" + id + ", fileName=" + fileName + ", email=" + email + ", siteName=" + siteName
-				+ ", sourceType=" + sourceType + ", fileLocation=" + fileLocation + ", sourceEmail=" + sourceEmail
-				+ ", testSuite=" + testSuite + ", lastmodifiedtime=" + lastmodifiedtime + ", createtime=" + createtime
-				+ "]";
+				+ ", sourceType=" + sourceType + ", status=" + status + ", fileLocation=" + fileLocation
+				+ ", sourceEmail=" + sourceEmail + ", testSuite=" + testSuite + ", lastmodifiedtime=" + lastmodifiedtime
+				+ ", createtime=" + createtime + "]";
 	}
 	@Override
 	public int hashCode() {
@@ -110,6 +123,7 @@ public class SingleTestSuite {
 		result = prime * result + ((siteName == null) ? 0 : siteName.hashCode());
 		result = prime * result + ((sourceEmail == null) ? 0 : sourceEmail.hashCode());
 		result = prime * result + ((sourceType == null) ? 0 : sourceType.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((testSuite == null) ? 0 : testSuite.hashCode());
 		return result;
 	}
@@ -167,6 +181,11 @@ public class SingleTestSuite {
 				return false;
 		} else if (!sourceType.equals(other.sourceType))
 			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
 		if (testSuite == null) {
 			if (other.testSuite != null)
 				return false;
@@ -174,5 +193,4 @@ public class SingleTestSuite {
 			return false;
 		return true;
 	}
-	
 }
