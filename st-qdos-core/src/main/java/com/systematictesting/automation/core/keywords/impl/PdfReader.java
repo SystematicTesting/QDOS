@@ -55,7 +55,8 @@ public class PdfReader implements Process {
 				String pdfFileName = element.getText();
 				String fileLocation = SystemParams.DOWNLOAD_FILE_LOCATION + File.separator + pdfFileName;
 				if (CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_7) || CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_10)){
-					fileLocation = "\""+fileLocation+"\"";
+					//fileLocation = "\""+fileLocation+"\"";
+					fileLocation = fileLocation.replace(" ", "\\ ");
 				}
 				File pdfFile = new File(fileLocation);
 				if (pdfFile.exists()){

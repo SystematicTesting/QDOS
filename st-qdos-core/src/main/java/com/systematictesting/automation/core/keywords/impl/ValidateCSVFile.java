@@ -55,7 +55,8 @@ public class ValidateCSVFile implements Process {
 				String csvFileName = element.getText();
 				String fileLocation = SystemParams.DOWNLOAD_FILE_LOCATION + File.separator + csvFileName;
 				if (CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_7) || CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_10)){
-					fileLocation = "\""+fileLocation+"\"";
+					//fileLocation = "\""+fileLocation+"\"";
+					fileLocation = fileLocation.replace(" ", "\\ ");
 				}
 				File csvFile = new File(fileLocation);
 				if (csvFile.exists()){
