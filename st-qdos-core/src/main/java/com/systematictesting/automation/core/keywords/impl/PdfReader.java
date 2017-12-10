@@ -19,10 +19,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.systematictesting.automation.core.constants.ElementType;
+import com.systematictesting.automation.core.constants.FrameworkParams;
 import com.systematictesting.automation.core.constants.Result;
 import com.systematictesting.automation.core.constants.SystemParams;
 import com.systematictesting.automation.core.framework.Browser;
 import com.systematictesting.automation.core.keywords.Process;
+import com.systematictesting.automation.core.utils.CommandLineParamsUtils;
 import com.systematictesting.qdos.beans.TestStepData;
 
 public class PdfReader implements Process {
@@ -52,6 +54,9 @@ public class PdfReader implements Process {
 				
 				String pdfFileName = element.getText();
 				String fileLocation = SystemParams.DOWNLOAD_FILE_LOCATION + File.separator + pdfFileName;
+				if (CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_7) || CommandLineParamsUtils.getInstance().getOperatingSystem().equals(FrameworkParams.OS_WINDOWS_10)){
+					fileLocation = "\""+fileLocation+"\"";
+				}
 				File pdfFile = new File(fileLocation);
 				if (pdfFile.exists()){
 					JsonElement jelement = new JsonParser().parse(testStep.getElementValue());
