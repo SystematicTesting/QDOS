@@ -12,25 +12,19 @@ public class SingleTestSuite {
 		String TEST_SUITE = "testSuite";
 		String LAST_MODIFIED_TIME = "lastmodifiedtime";
 		String CREATE_TIME = "createtime";
-		String STATUS = "status";
-	}
-	
-	public interface STATUS {
-		String COMPLETE = "COMPLETE";
-		String INCOMPLETE = "INCOMPLETE";
 	}
 	
 	private String id;
-	
+
 	private String fileName;
 	
 	private String email;
-	
-	private String siteName;
-	
-	private String sourceType;
 
-	private String status;
+	private String siteName;
+
+	private String sourceType;
+	
+	private String completeStatus;
 	
 	private String fileLocation;
 	private String sourceEmail;
@@ -97,23 +91,17 @@ public class SingleTestSuite {
 	public void setSourceEmail(String sourceEmail) {
 		this.sourceEmail = sourceEmail;
 	}
-	public String getStatus() {
-		return status;
+	public String getCompleteStatus() {
+		return completeStatus;
 	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	@Override
-	public String toString() {
-		return "SingleTestSuite [id=" + id + ", fileName=" + fileName + ", email=" + email + ", siteName=" + siteName
-				+ ", sourceType=" + sourceType + ", status=" + status + ", fileLocation=" + fileLocation
-				+ ", sourceEmail=" + sourceEmail + ", testSuite=" + testSuite + ", lastmodifiedtime=" + lastmodifiedtime
-				+ ", createtime=" + createtime + "]";
+	public void setCompleteStatus(String completeStatus) {
+		this.completeStatus = completeStatus;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((completeStatus == null) ? 0 : completeStatus.hashCode());
 		result = prime * result + ((createtime == null) ? 0 : createtime.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fileLocation == null) ? 0 : fileLocation.hashCode());
@@ -123,7 +111,6 @@ public class SingleTestSuite {
 		result = prime * result + ((siteName == null) ? 0 : siteName.hashCode());
 		result = prime * result + ((sourceEmail == null) ? 0 : sourceEmail.hashCode());
 		result = prime * result + ((sourceType == null) ? 0 : sourceType.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((testSuite == null) ? 0 : testSuite.hashCode());
 		return result;
 	}
@@ -136,6 +123,11 @@ public class SingleTestSuite {
 		if (getClass() != obj.getClass())
 			return false;
 		SingleTestSuite other = (SingleTestSuite) obj;
+		if (completeStatus == null) {
+			if (other.completeStatus != null)
+				return false;
+		} else if (!completeStatus.equals(other.completeStatus))
+			return false;
 		if (createtime == null) {
 			if (other.createtime != null)
 				return false;
@@ -181,16 +173,18 @@ public class SingleTestSuite {
 				return false;
 		} else if (!sourceType.equals(other.sourceType))
 			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
 		if (testSuite == null) {
 			if (other.testSuite != null)
 				return false;
 		} else if (!testSuite.equals(other.testSuite))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "SingleTestSuite [id=" + id + ", fileName=" + fileName + ", email=" + email + ", siteName=" + siteName
+				+ ", sourceType=" + sourceType + ", completeStatus=" + completeStatus + ", fileLocation=" + fileLocation
+				+ ", sourceEmail=" + sourceEmail + ", testSuite=" + testSuite + ", lastmodifiedtime=" + lastmodifiedtime
+				+ ", createtime=" + createtime + "]";
 	}
 }

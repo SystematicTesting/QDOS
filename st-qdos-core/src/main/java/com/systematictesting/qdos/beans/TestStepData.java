@@ -1,8 +1,6 @@
 package com.systematictesting.qdos.beans;
 
-import com.systematictesting.automation.core.constants.ElementType;
-
-public class TestStepData {
+public class TestStepData implements Cloneable{
 	private String dataSetId;//it will be generated dynamically based on number of rows in Test Step Data Sheet.
 	private String dataSetDescription;
 	private String stepId;
@@ -42,17 +40,8 @@ public class TestStepData {
 	public void setProceedOnFail(String proceedOnFail) {
 		this.proceedOnFail = proceedOnFail;
 	}
-	public ElementType getElementType() {
-		if (elementType.equals(ElementType.XPATH.toString())){
-			return ElementType.XPATH;
-		}
-		if (elementType.equals(ElementType.CSS_SELECTOR.toString())){
-			return ElementType.CSS_SELECTOR;
-		}
-		if (elementType.equals(ElementType.ID.toString())){
-			return ElementType.ID;
-		}
-		return ElementType.XPATH;
+	public String getElementType() {
+		return elementType;
 	}
 	public void setElementType(String elementType) {
 		this.elementType = elementType;
@@ -153,5 +142,14 @@ public class TestStepData {
 				+ proceedOnFail + ", elementType=" + elementType + ", elementKey=" + elementKey + ", elementValue="
 				+ elementValue + "]";
 	}
-	
+	@Override
+	public TestStepData clone() {
+		TestStepData returnValue = null;
+		try {
+			returnValue = (TestStepData) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return returnValue;
+	}
 }
