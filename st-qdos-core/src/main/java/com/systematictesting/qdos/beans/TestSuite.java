@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class TestSuite {
 	private String suiteName;
+	private String suiteDescription;
 	private List<TestCaseData> testCaseArray = new ArrayList<TestCaseData>();
 	private Map<String,String> keyValuePairs = new HashMap<String,String>();
 	public String getSuiteName() {
@@ -27,11 +28,18 @@ public class TestSuite {
 	public void setKeyValuePairs(Map<String, String> keyValuePairs) {
 		this.keyValuePairs = keyValuePairs;
 	}
+	public String getSuiteDescription() {
+		return suiteDescription;
+	}
+	public void setSuiteDescription(String suiteDescription) {
+		this.suiteDescription = suiteDescription;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((keyValuePairs == null) ? 0 : keyValuePairs.hashCode());
+		result = prime * result + ((suiteDescription == null) ? 0 : suiteDescription.hashCode());
 		result = prime * result + ((suiteName == null) ? 0 : suiteName.hashCode());
 		result = prime * result + ((testCaseArray == null) ? 0 : testCaseArray.hashCode());
 		return result;
@@ -50,6 +58,11 @@ public class TestSuite {
 				return false;
 		} else if (!keyValuePairs.equals(other.keyValuePairs))
 			return false;
+		if (suiteDescription == null) {
+			if (other.suiteDescription != null)
+				return false;
+		} else if (!suiteDescription.equals(other.suiteDescription))
+			return false;
 		if (suiteName == null) {
 			if (other.suiteName != null)
 				return false;
@@ -64,8 +77,7 @@ public class TestSuite {
 	}
 	@Override
 	public String toString() {
-		return "TestSuite [suiteName=" + suiteName + ", testCaseArray=" + testCaseArray + ", keyValuePairs="
-				+ keyValuePairs + "]";
-	}
-	
+		return "TestSuite [suiteName=" + suiteName + ", suiteDescription=" + suiteDescription + ", testCaseArray="
+				+ testCaseArray + ", keyValuePairs=" + keyValuePairs + "]";
+	}	
 }

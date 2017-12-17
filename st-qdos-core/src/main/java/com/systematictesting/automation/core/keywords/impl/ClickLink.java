@@ -27,18 +27,21 @@ public class ClickLink implements Process {
 		WebElement element = null;
 		try {
 			if (testStep.getElementType().equals(ElementType.XPATH)) {
+				System.out.println("XPATH IS PICKED");
 				element = Browser.getInstance().getDriver().findElement(By.xpath(elementKeyValuePairs.get(testStep.getElementKey())));
 			}
 			if (testStep.getElementType().equals(ElementType.ID)) {
+				System.out.println("ID IS PICKED");
 				element = Browser.getInstance().getDriver().findElement(By.id(elementKeyValuePairs.get(testStep.getElementKey())));
 			}
 			if (testStep.getElementType().equals(ElementType.CSS_SELECTOR)) {
+				System.out.println("CSS-SELECTOR IS PICKED");
 				element = Browser.getInstance().getDriver().findElement(By.cssSelector(elementKeyValuePairs.get(testStep.getElementKey())));
 			}
 			if (element!=null){
 				element.click();
 			} else {
-				return Result.FAIL;
+				return Result.FAIL+" - Element is NULL";
 			}
 		} catch (Throwable t) {
 			return Result.FAIL+" - Link Not Found";
