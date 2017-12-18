@@ -54,24 +54,46 @@ public class ValidateCSVFile implements Process {
 				String fileLocation = SystemParams.DOWNLOAD_FILE_LOCATION + File.separator + csvFileName;
 				File csvFile = new File(fileLocation);
 				if (csvFile.exists()){
-					JsonElement jelement = new JsonParser().parse(testStep.getElementValue());
-				    JsonArray  jsonDataValidationRules = jelement.getAsJsonArray();
-				    Map<Integer,List<String>> csvContentInMap = new HashMap<Integer, List<String>>();
-				    populateCSVFileContent(csvContentInMap, fileLocation);
+				    Map<Integer,String> actualCSVContent = new HashMap<Integer, String>();
+				    populateCSVFileContent(actualCSVContent, fileLocation);
+				    System.out.println("\n@@@ ValidateCSVFile : ACTUAL : actualCSVContent:\n"+actualCSVContent);
 				    
-				    for(int index=0;index<jsonDataValidationRules.size();index++){
-				    	JsonObject jsonSingleRule = jsonDataValidationRules.get(index).getAsJsonObject();
-				    	int row = jsonSingleRule.get("row").getAsInt();
-				    	int column = jsonSingleRule.get("column").getAsInt();
-				    	String expectedData = jsonSingleRule.get("data").getAsString();
-				    	
-				    	boolean isDataMatching = true;
-				    	isDataMatching = verifyExpectedDataWithActualData(csvContentInMap, row, column, expectedData.trim());
-				    	if (!isDataMatching){
-				    		return Result.FAIL + " - Data doesn't match with CSV File. Please check logs.";
-				    	}
+				    
+				    String expectedCSVString = testStep.getElementValue();
+				    System.out.println("\n@@@ ValidateCSVFile : EXPECTED : String expectedCSVString:\n"+expectedCSVString);
+				    
+				    Map<Integer,String> expectedCSVContent = new HashMap<Integer, String>();
+				    populateCSVFromString(expectedCSVContent, expectedCSVString);
+				    System.out.println("\n@@@ ValidateCSVFile : EXPECTED : MAP expectedCSVContent:\n"+expectedCSVContent);
+				    
+				    boolean isExpectedPresentInActual = true;
+				    List<String> listOfUnExpectedLines = new ArrayList<String>();
+				    
+				    if (expectedCSVContent.size() == actualCSVContent.size()){
+					    for (int index=0;index<expectedCSVContent.size();index++){
+					    	String expectedLine = expectedCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
+					    	String actualLine = actualCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
+					    	if (!expectedLine.equals(actualLine)){
+					    		isExpectedPresentInActual = false;
+					    		listOfUnExpectedLines.add(actualLine);
+					    		System.out.println("\n@@@ ValidateCSVFile : ACTUAL LINE :"+actualLine);
+					    		System.out.println("\n@@@ ValidateCSVFile : EXPECTED LINE :"+expectedLine);
+					    		System.out.println("\n@@@ ValidateCSVFile : EQUAL DECISON :"+expectedLine.equals(actualLine));
+					    	}
+					    }
+					    if (isExpectedPresentInActual){
+					    	return Result.PASS;
+					    } else {
+					    	int index=0;
+					    	for(String unexpectedLines : listOfUnExpectedLines){
+					    		System.out.println("\nUNEXPECTED LINE at line="+(index+1)+" : "+unexpectedLines);
+					    		index++;
+					    	}
+					    	return Result.FAIL + " - Some unexpected lines found in CSV File.";
+					    }
+				    } else {
+				    	return Result.FAIL+" - CSV File contains different number of lines between downloaded and expected. So failed to do comparision.";
 				    }
-					
 				} else {
 					return Result.FAIL+" - CSV File does not exists on download location : "+fileLocation;
 				}
@@ -84,16 +106,13 @@ public class ValidateCSVFile implements Process {
 		return Result.PASS;
 	}
 
-	private void populateCSVFileContent(Map<Integer,List<String>> csvContentInMap, String csvFileNameWithPath) {
+	private void populateCSVFileContent(Map<Integer,String> csvContentInMap, String csvFileNameWithPath) {
         String line = "";
-        String cvsSplitBy = ",";
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvFileNameWithPath))) {
         	int index=0;
             while ((line = br.readLine()) != null) {
-                String[] dataInRow = line.split(cvsSplitBy);
-                List<String> dataInRowList = new ArrayList<String>(Arrays.asList(dataInRow));
-                csvContentInMap.put(index, dataInRowList);
+                csvContentInMap.put(index, line);
                 index++;
             }
 
@@ -101,65 +120,27 @@ public class ValidateCSVFile implements Process {
             e.printStackTrace();
         }
 	}
+	
+	private void populateCSVFromString(Map<Integer,String> csvContentInMap, String csvContentInString) {
+        String line = System.getProperty("line.separator");
 
-	private boolean verifyExpectedDataWithActualData(Map<Integer, List<String>> csvContentInMap, int row, int column,
-			String expectedData) {
-		if (csvContentInMap.get(row) != null){
-			List<String> listOfColumnsData = csvContentInMap.get(row);
-			if (column<listOfColumnsData.size()){
-				String actualData = listOfColumnsData.get(column).trim();
-				String  actualDataToCompare = actualData.replaceAll("[^\\w\\s]","");
-				String expectedDataToCompare = expectedData.replaceAll("[^\\w\\s]","");
-				if (actualDataToCompare.equals(expectedDataToCompare)){
-					return true;
-				} else {
-					System.out.println("ValidateCSVFile :: DATA NOT MATCHING :: Expected data : "+expectedData+" |VS| Actual data : "+actualData);
-					return false;
-				}
-			} else {
-				System.out.println("Expected column doesn't exists.");
-				return false;
-			}
-		} else {
-			System.out.println("Expected row doesn't exists.");
-			return false;
-		}
+        String[] dataInLine = csvContentInString.split(line);
+        
+        int index=0;
+        for (String expectedLine : dataInLine){
+        	csvContentInMap.put(index, expectedLine);
+        	index++;
+        }
 	}
 	
 	public static void main(String[] args) {
-		String csvFileNameWithPath = "/Users/sharadkumar/Downloads/Rule-Violation-Report-20171112-221926.csv";
-		Map<Integer,List<String>> csvContentInMap = new HashMap<Integer, List<String>>();
+		String csvFileNameWithPath = "/Users/sharadkumar/Downloads/Rule Violation Report 20171116-141514.csv";
+		Map<Integer,String> csvContentInMap = new HashMap<Integer, String>();
 		ValidateCSVFile objValidateCSVFile = new ValidateCSVFile();
 		objValidateCSVFile.populateCSVFileContent(csvContentInMap, csvFileNameWithPath);
-		System.out.println("DATA : "+csvContentInMap);
+		System.out.println("DATA : "+csvContentInMap);		
 	}
 
 }
 
-/*
- * Sample data validation rules which will go inside the Excel Sheet are:
- * 
-[
-    {
-      "row": 0,
-      "column": 0,
-      "data" : "some value"
-    },
-    {
-      "row": 0,
-      "column": 1,
-      "data" : "some value"
-    },
-    {
-      "row": 0,
-      "column": 2,
-      "data" : "some value"
-    },
-    {
-      "row": 0,
-      "column": 3,
-      "data" : "some value"
-    }
-]
- */
 
