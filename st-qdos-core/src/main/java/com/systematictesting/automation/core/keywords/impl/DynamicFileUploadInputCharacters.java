@@ -143,11 +143,10 @@ public class DynamicFileUploadInputCharacters implements Process {
 
 
 /*
- * 
- * {
- * 		"absoluteFileName":"/Users/sharadkumar/Downloads/2018_March_Statement.pdf",
- * 		"newFilePath":"/Users/sharadkumar/Downloads",
- * 		"newFilenamePattern":"2018_March_Statement_{TIMESTAMP}.pdf"
- * }
- * 
- */
+ {
+ 	"absoluteFileName":"/Users/sharadkumar/Downloads/2018_March_Statement.pdf",
+ 	"newFilePath":"/Users/sharadkumar/Downloads",
+ 	"newFilenamePattern":"2018_March_Statement_{DATE}_{TIMESTAMP}.pdf"
+ }
+ 
+*/
