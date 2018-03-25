@@ -101,7 +101,7 @@ public class ValidateCSVFile implements Process {
 					    			String expectedStringToBeCompared = lineFromExpectedFileWithWildCard.substring(startIndexOfWildCard,endIndexOfWildCard);
 					    			String expectedLine = expectedStringToBeCompared.replaceAll("[^a-zA-Z0-9\\s+]", "");
 							    	
-							    	if (expectedLine.indexOf(actualLine)!=-1){
+							    	if (actualLine.indexOf(expectedLine)!=-1){
 							    		endIndexOfWildCard = endIndexOfWildCard + WILDCARD.length();
 							    		startIndexOfWildCard = endIndexOfWildCard;
 							    	} else {
