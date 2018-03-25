@@ -40,6 +40,14 @@ public class WaitToFinishAjaxCall implements Process {
 			if (testStep.getElementType().equals(ElementType.CSS_SELECTOR)) {
 				container = By.cssSelector(elementKeyValuePairs.get(testStep.getElementKey()));
 			}
+			if (testStep.getElementType().equals(ElementType.PARTIAL_LINK_TEXT)) {
+				System.out.println(ElementType.PARTIAL_LINK_TEXT+" IS PICKED");
+				container = By.partialLinkText(elementKeyValuePairs.get(testStep.getElementKey()));
+			}
+			if (testStep.getElementType().equals(ElementType.LINK_TEXT)) {
+				System.out.println(ElementType.LINK_TEXT+" IS PICKED");
+				container = By.linkText(elementKeyValuePairs.get(testStep.getElementKey()));
+			}
 			
 			WebDriverWait wait = new WebDriverWait(Browser.getInstance().getDriver(), timeInSeconds);
 			wait.until(ExpectedConditions.presenceOfElementLocated(container));

@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.systematictesting.automation.core.constants.ElementType;
 import com.systematictesting.automation.core.constants.Result;
 import com.systematictesting.automation.core.constants.SystemParams;
@@ -26,6 +21,8 @@ import com.systematictesting.automation.core.keywords.Process;
 import com.systematictesting.qdos.beans.TestStepData;
 
 public class ValidateCSVFile implements Process {
+	
+	private final String WILDCARD = "{IGNORE}";
 
 	@Override
 	public String execute(Map<String, String> elementKeyValuePairs, TestStepData testStep) {
@@ -47,6 +44,14 @@ public class ValidateCSVFile implements Process {
 			}
 			if (testStep.getElementType().equals(ElementType.CSS_SELECTOR)) {
 				element = Browser.getInstance().getDriver().findElement(By.cssSelector(elementKeyValuePairs.get(testStep.getElementKey())));
+			}
+			if (testStep.getElementType().equals(ElementType.PARTIAL_LINK_TEXT)) {
+				System.out.println(ElementType.PARTIAL_LINK_TEXT+" IS PICKED");
+				element = Browser.getInstance().getDriver().findElement(By.partialLinkText(elementKeyValuePairs.get(testStep.getElementKey())));
+			}
+			if (testStep.getElementType().equals(ElementType.LINK_TEXT)) {
+				System.out.println(ElementType.LINK_TEXT+" IS PICKED");
+				element = Browser.getInstance().getDriver().findElement(By.linkText(elementKeyValuePairs.get(testStep.getElementKey())));
 			}
 			if (element!=null){
 				
@@ -71,14 +76,43 @@ public class ValidateCSVFile implements Process {
 				    
 				    if (expectedCSVContent.size() == actualCSVContent.size()){
 					    for (int index=0;index<expectedCSVContent.size();index++){
-					    	String expectedLine = expectedCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
-					    	String actualLine = actualCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
-					    	if (!expectedLine.equals(actualLine)){
-					    		isExpectedPresentInActual = false;
-					    		listOfUnExpectedLines.add(actualLine);
-					    		System.out.println("\n@@@ ValidateCSVFile : ACTUAL LINE :"+actualLine);
-					    		System.out.println("\n@@@ ValidateCSVFile : EXPECTED LINE :"+expectedLine);
-					    		System.out.println("\n@@@ ValidateCSVFile : EQUAL DECISON :"+expectedLine.equals(actualLine));
+					    	String lineFromExpectedFileWithWildCard = expectedCSVContent.get(index);
+					    	
+					    	int totalWildCardCount = getCountOfWildCardInExpectedLine(lineFromExpectedFileWithWildCard);
+					    	
+					    	if (totalWildCardCount == 0){
+					    		String expectedLine = expectedCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
+						    	String actualLine = actualCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
+						    	if (!expectedLine.equals(actualLine)){
+						    		isExpectedPresentInActual = false;
+						    		listOfUnExpectedLines.add(actualLine);
+						    		System.out.println("\n@@@ ValidateCSVFile : ACTUAL LINE :"+actualLine);
+						    		System.out.println("\n@@@ ValidateCSVFile : EXPECTED LINE :"+expectedLine);
+						    		System.out.println("\n@@@ ValidateCSVFile : EQUAL DECISON :"+expectedLine.equals(actualLine));
+						    	}
+					    	} else {
+					    		//ACTUAL : W,,Header_2,2018-07-22 2018-03-25 00:02:03,The file preparation date is after today's date,0,,,,,,,,,,,
+					    		//EXPECTED : W,,Header_2,{IGNORE},The file preparation date is after {IGNORE} date,0,,,,,,,,,,,
+					    		String actualLine = actualCSVContent.get(index).replaceAll("[^a-zA-Z0-9\\s+]", "");
+					    		int startIndexOfWildCard = 0;
+					    		int endIndexOfWildCard = 0;
+					    		for (int indexOfWildCard=1;indexOfWildCard<=totalWildCardCount;indexOfWildCard++){
+					    			endIndexOfWildCard = lineFromExpectedFileWithWildCard.indexOf(WILDCARD,startIndexOfWildCard);
+					    			String expectedStringToBeCompared = lineFromExpectedFileWithWildCard.substring(startIndexOfWildCard,endIndexOfWildCard);
+					    			String expectedLine = expectedStringToBeCompared.replaceAll("[^a-zA-Z0-9\\s+]", "");
+							    	
+							    	if (expectedLine.indexOf(actualLine)!=-1){
+							    		endIndexOfWildCard = endIndexOfWildCard + WILDCARD.length();
+							    		startIndexOfWildCard = endIndexOfWildCard;
+							    	} else {
+							    		isExpectedPresentInActual = false;
+							    		listOfUnExpectedLines.add(actualLine);
+							    		System.out.println("\n@@@ ValidateCSVFile : ACTUAL LINE :"+actualLine);
+							    		System.out.println("\n@@@ ValidateCSVFile : EXPECTED LINE with in ACTUAL LINE Between wildcard {IGNORE} :"+expectedLine);
+							    		System.out.println("\n@@@ ValidateCSVFile : INDEX VALUE :"+expectedLine.indexOf(actualLine));
+							    		break;
+							    	}
+					    		}
 					    	}
 					    }
 					    if (isExpectedPresentInActual){
@@ -104,6 +138,22 @@ public class ValidateCSVFile implements Process {
 		}
 
 		return Result.PASS;
+	}
+
+	private int getCountOfWildCardInExpectedLine(String lineFromExpectedFileWithWildCard) {
+		int count = 0;
+		int lastIndex = 0;
+		while(lastIndex != -1){
+
+		    lastIndex = lineFromExpectedFileWithWildCard.indexOf(WILDCARD,lastIndex);
+
+		    if(lastIndex != -1){
+		        count ++;
+		        lastIndex += WILDCARD.length();
+		    }
+		}
+		
+		return count;
 	}
 
 	private void populateCSVFileContent(Map<Integer,String> csvContentInMap, String csvFileNameWithPath) {
